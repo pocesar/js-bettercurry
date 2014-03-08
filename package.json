@@ -1,0 +1,31 @@
+{
+  "name": "better-curry",
+  "version": "1.0.0",
+  "description": "While Function.bind is dragging your performance down, there's always a better curry",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha",
+    "benchmark": "node test/benchmark.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/pocesar/js-bettercurry"
+  },
+  "keywords": [
+    "curry",
+    "function",
+    "bind",
+    "currying"
+  ],
+  "devDependencies": {
+    "mocha": "*",
+    "expect.js": "*",
+    "benchmark": "^1.0.0"
+  },
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/pocesar/js-bettercurry/issues"
+  },
+  "homepage": "https://github.com/pocesar/js-bettercurry"
+}

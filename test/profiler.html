@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Profiler</title>
+</head>
+<body>
+	<script src="../index.js"></script>
+	<script type="text/javascript">
+		(function(){
+			function fn(value1, value2, value3){
+				return value1 + value2 + value3;
+			}
+			var wrapped = BetterCurry.wrap(fn);
+			for (var i = 0; i < 100000000; i++) {
+				wrapped(1,2,3);
+			}
+		})();
+	</script>
+</body>
+</html>
