@@ -1,6 +1,9 @@
 var
   Benchmark = typeof Benchmark !== 'undefined' ? Benchmark : require('benchmark').Benchmark,
-  args = {bc: typeof BetterCurry !== 'undefined' ? BetterCurry : require('../index.js')},
+  args = {
+    bc: typeof BetterCurry !== 'undefined' ? BetterCurry : require('../index.js'),
+    delegates: typeof require === 'function' ? require('delegates') : void 0
+  },
   setup = function (){
     function Obj(){
       this.that = "that";
@@ -26,6 +29,22 @@ var
     var curried = curry(fn, inObj);
     var wrapped = this.args.bc.wrap(fn, inObj);
     var predefined = this.args.bc.predefine(fn, ['YES'], inObj);
+    var gotDelegates = typeof this.args.delegates !== 'undefined';
+    if (gotDelegates) {
+      var TJdelegated = {}, BCdelegated = {};
+      BCdelegated.request = {
+        foo: function(bar){
+          return bar;
+        }
+      };
+      TJdelegated.request = {
+        foo: function(bar){
+          return bar;
+        }
+      };
+      this.args.delegates(TJdelegated, 'request').method('foo');
+      this.args.bc.delegate(BCdelegated, 'request').method('foo');
+    }
   },
   onError = function (event){
     console.log(String(event.message));
@@ -81,8 +100,25 @@ suite
     setup: setup,
     fn: "wrapped.apply(null, ['YES']);",
     onError: onError
-  })
+  });
+
+  if (args.delegates !== void 0) {
+    suite
+      .add('TJ delegates', {
+        args: args,
+        setup: setup,
+        fn: "TJdelegated.foo('YES');",
+        onError: onError
+      })
+      .add('BetterCurry delegates', {
+        args: args,
+        setup: setup,
+        fn: "BCdelegated.foo('YES');",
+        onError: onError
+      });
+  }
   // add listeners
+suite
   .on('cycle', function (event){
     console.log(String(event.target));
     if (typeof document !== 'undefined') {

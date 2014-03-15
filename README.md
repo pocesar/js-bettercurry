@@ -1,15 +1,15 @@
 [![Build Status](https://travis-ci.org/pocesar/js-bettercurry.png?branch=master)](https://travis-ci.org/pocesar/js-bettercurry?branch=master)
 
-Better Curry
+# Better Curry
 =================
-
-# WHY?
 
 Because `return function(){ return fn.apply(context, Array.prototype.slice.call(arguments)); }` isn't good enough, that's why better curry.
 
+Forget `Function.bind` and `func.apply(context, arguments)`, performance matters! For a better curry!
+
 You won't find any other curry module that can achieve those benchmarks.
 
-# Install
+## Install
 
 ```bash
 ~ npm install better-curry
@@ -23,9 +23,9 @@ or
 
 Works on the browser or on node.js (super duper performance on the latter)
 
-# API
+## API
 
-### `BetterCurry.wrap(fn, [context], [len])`
+#### `BetterCurry.wrap(fn, [context], [len])`
 
 When the function have all arguments defined.
 You can bind the new resulting function to a new context (change the `this` inside the function).
@@ -60,7 +60,7 @@ var based = BetterCurry.wrap(base, null, -1);
 based('one', 'two', 'three', 'wont be ignored','its','free for all'); // 'one + two + three + wont be ignored + its + free for all'
 ```
 
-### `BetterCurry.predefine(fn, args, [context], [len])`
+#### `BetterCurry.predefine(fn, args, [context], [len])`
 
 Predefine creates a function that, when executed, will have the
 predefined arguments plus any arguments that you pass:
@@ -88,6 +88,42 @@ curried('5','6'); // '1 + 2 + 3 + 4 + 5'
 
 All `-1` len are slower since it uses `Function.apply` (many times slower than `Function.call` and `Array.prototype.slice` + `concat`)
 
+#### `BetterCurry.delegate(proto, target)`
+
+A minor rewrite of [visionmedia's delegates](https://github.com/visionmedia/node-delegates) but around 13% faster
+
+```js
+var obj = {
+  request: {
+    _value: 1,
+    function1: function(){},
+    get value(){
+      return this._value;
+    },
+    set value(val){
+      this._value = val;
+    },
+  }
+};
+
+var delegated = BetterCurry.delegate(obj, 'request'); //all mirror functions from obj will reflect to obj.request with the same context
+
+delegated
+.method('function1')
+.access('value')
+.access({name: 'value', as: 'value2'})
+.method({name: 'function1', as: 'function2', args:['arg1']});
+
+//obj is now:
+obj = {
+  function1: function1(){/*...*/},
+  function2: function1(arg1){/*...*/},
+  value: /*..value..*/
+  value2: /*..value..*/
+  request: {/*...*/}
+};
+```
+
 # Test
 
 Just regular stuff (100% coverage by the way)
@@ -96,12 +132,17 @@ Just regular stuff (100% coverage by the way)
 npm run test
 ```
 
+```bash
+npm run coverage
 ```
-Statements: 100% (41 / 41)
-Branches: 100% (195 / 195)
-Functions: 100% (16 / 16)
-Lines: 100% (41 / 41)
-Ignored: 3 statements, 5 branches
+
+```
+=============================== Coverage summary ===============================
+Statements   : 100% ( 87/87 ), 3 ignored
+Branches     : 100% ( 217/217 ), 5 ignored
+Functions    : 100% ( 25/25 )
+Lines        : 100% ( 87/87 )
+================================================================================
 ```
 
 # Benchmark

@@ -1,10 +1,11 @@
 {
   "name": "better-curry",
-  "version": "1.0.0",
-  "description": "While Function.bind is dragging your performance down, there's always a better curry",
+  "version": "1.1.0",
+  "description": "Forget Function.bind and func.apply(context, arguments), performance matters! For a better curry!",
   "main": "index.js",
   "scripts": {
     "test": "mocha",
+    "coverage": "node ./node_modules/istanbul/lib/cli.js cover ./node_modules/mocha/bin/_mocha",
     "benchmark": "node test/benchmark.js"
   },
   "repository": {
@@ -15,12 +16,16 @@
     "curry",
     "function",
     "bind",
-    "currying"
+    "currying",
+    "partial function",
+    "functional",
+    "delegate"
   ],
   "devDependencies": {
     "mocha": "*",
     "expect.js": "*",
-    "benchmark": "^1.0.0"
+    "benchmark": "^1.0.0",
+    "delegates": "*"
   },
   "author": "",
   "license": "MIT",
