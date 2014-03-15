@@ -178,9 +178,15 @@
     }
 
     // really? 9 args?
-    return function variadic(){
-      return fn.apply(context, themArgs.concat(Array.prototype.slice.call(arguments)));
-    };
+    if (themArgs.length) {
+      return function variadic(){
+        return fn.apply(context, themArgs.concat(Array.prototype.slice.call(arguments)));
+      };
+    } else {
+      return function variadic(){
+        return fn.apply(context, arguments);
+      };
+    }
   }
 
   /**
@@ -240,11 +246,13 @@
     var
       obj = typeof name === 'object',
       _name = obj ? (typeof name.as === 'string' ? name.as : name.name) : name,
+      _len = obj ? (typeof name.len === 'number' ? name.len : void 0) : void 0,
       _args = obj ? (typeof name.args !== 'undefined' ? name.args : false) : false;
 
     return {
       target: obj ? name.name : name,
       name: _name,
+      len: _len,
       args: _args
     };
   }
@@ -263,8 +271,8 @@
     this.methods.push(opts.name);
 
     proto[opts.name] = opts.args ?
-      Predefine(proto[target][opts.target], opts.args, proto[target]) :
-      Wrap(proto[target][opts.target], proto[target]);
+      Predefine(proto[target][opts.target], opts.args, proto[target], opts.len) :
+      Wrap(proto[target][opts.target], proto[target], opts.len);
 
     return this;
   };

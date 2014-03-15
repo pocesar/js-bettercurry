@@ -213,12 +213,21 @@ describe('BetterCurry', function (){
           foo: function (bar){
             expect(this).to.be(obj.request);
             return bar;
+          },
+          forceLen: function(){
+            return arguments[0];
           }
         };
 
-        BetterCurry.delegate(obj, 'request').method('foo');
+        var delegated = BetterCurry.delegate(obj, 'request')
+          .method('foo')
+          .method('forceLen')
+          .method({name: 'forceLen', as:'force', len: 1})
+          ;
 
         expect(obj.foo('something')).to.equal('something');
+        expect(obj.forceLen('asdf')).to.equal(undefined);
+        expect(obj.force('asdf')).to.equal('asdf');
       });
 
       it('should work with instances and functions', function(){
