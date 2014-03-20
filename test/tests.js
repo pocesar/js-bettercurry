@@ -37,11 +37,11 @@ describe('BetterCurry', function (){
 
     var i, arg;
 
-    for (i = 0; i < 9; i++) {
+    for (i = 0; i <= BetterCurry.MAX_OPTIMIZED; i++) {
       arg = args(i);
       fs[i] = new Function(arg.join(','), 'return this.data + ":" + (' + arg.join('+') + ');');
     }
-    for (i = 0; i < 9; i++) {
+    for (i = 0; i <= BetterCurry.MAX_OPTIMIZED; i++) {
       arg = args(i);
       fns[i] = new Function(arg.join(','), 'return ' + arg.join('+') + ';');
     }

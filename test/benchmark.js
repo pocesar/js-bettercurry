@@ -35,15 +35,17 @@ var
       BCdelegated.request = {
         foo: function(bar){
           return bar;
-        }
+        },
+        val: 0
       };
       TJdelegated.request = {
         foo: function(bar){
           return bar;
-        }
+        },
+        val: 0
       };
-      this.args.delegates(TJdelegated, 'request').method('foo');
-      this.args.bc.delegate(BCdelegated, 'request').method('foo');
+      this.args.delegates(TJdelegated, 'request').method('foo').access('val');
+      this.args.bc.delegate(BCdelegated, 'request').method('foo').access('val');
     }
   },
   onError = function (event){
@@ -104,18 +106,31 @@ suite
 
   if (args.delegates !== void 0) {
     suite
-      .add('TJ delegates', {
+      .add('TJ delegates method', {
         args: args,
         setup: setup,
         fn: "TJdelegated.foo('YES');",
         onError: onError
       })
-      .add('BetterCurry delegates', {
+      .add('BetterCurry delegates method', {
         args: args,
         setup: setup,
         fn: "BCdelegated.foo('YES');",
         onError: onError
-      });
+      })
+      .add('TJ delegates access', {
+        args: args,
+        setup: setup,
+        fn: "TJdelegated.val = 1; TJdelegated.val === 1;",
+        onError: onError
+      })
+      .add('BetterCurry delegates access', {
+        args: args,
+        setup: setup,
+        fn: "BCdelegated.val = 1; BCdelegated.val === 1;",
+        onError: onError
+      })
+      ;
   }
   // add listeners
 suite

@@ -1,11 +1,11 @@
 {
   "name": "better-curry",
   "main": "index.js",
-  "version": "1.0.0",
+  "version": "1.1.2",
   "authors": [
     "Paulo Cesar <email@pocesar.e4ward.com>"
   ],
-  "description": "Because `return function(){ return fn.apply(context, Array.prototype.slice.call(arguments)); }` isn't good enough, that's why better curry.",
+  "description": "Forget Function.bind and func.apply(context, arguments), performance matters! For a better curry!",
   "keywords": [
     "curry",
     "function",

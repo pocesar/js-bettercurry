@@ -175,9 +175,63 @@
             instead ? instead(arg8, 7) : arg8
           );
         };
+      case 9:
+        return function eightArgs(arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9){
+          return noContext ?
+            fn(
+              instead ? instead(arg1, 0) : arg1,
+              instead ? instead(arg2, 1) : arg2,
+              instead ? instead(arg3, 2) : arg3,
+              instead ? instead(arg4, 3) : arg4,
+              instead ? instead(arg5, 4) : arg5,
+              instead ? instead(arg6, 5) : arg6,
+              instead ? instead(arg7, 6) : arg7,
+              instead ? instead(arg8, 7) : arg8,
+              instead ? instead(arg9, 8) : arg9
+            )
+            : fn.call(context,
+            instead ? instead(arg1, 0) : arg1,
+            instead ? instead(arg2, 1) : arg2,
+            instead ? instead(arg3, 2) : arg3,
+            instead ? instead(arg4, 3) : arg4,
+            instead ? instead(arg5, 4) : arg5,
+            instead ? instead(arg6, 5) : arg6,
+            instead ? instead(arg7, 6) : arg7,
+            instead ? instead(arg8, 7) : arg8,
+            instead ? instead(arg9, 8) : arg9
+          );
+        };
+      case 10:
+        return function eightArgs(arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10){
+          return noContext ?
+            fn(
+              instead ? instead(arg1, 0) : arg1,
+              instead ? instead(arg2, 1) : arg2,
+              instead ? instead(arg3, 2) : arg3,
+              instead ? instead(arg4, 3) : arg4,
+              instead ? instead(arg5, 4) : arg5,
+              instead ? instead(arg6, 5) : arg6,
+              instead ? instead(arg7, 6) : arg7,
+              instead ? instead(arg8, 7) : arg8,
+              instead ? instead(arg9, 8) : arg9,
+              instead ? instead(arg10, 9) : arg10
+            )
+            : fn.call(context,
+            instead ? instead(arg1, 0) : arg1,
+            instead ? instead(arg2, 1) : arg2,
+            instead ? instead(arg3, 2) : arg3,
+            instead ? instead(arg4, 3) : arg4,
+            instead ? instead(arg5, 4) : arg5,
+            instead ? instead(arg6, 5) : arg6,
+            instead ? instead(arg7, 6) : arg7,
+            instead ? instead(arg8, 7) : arg8,
+            instead ? instead(arg9, 8) : arg9,
+            instead ? instead(arg10, 9) : arg10
+          );
+        };
     }
 
-    // really? 9 args?
+    // really? 11 args?
     if (themArgs.length) {
       return function variadic(){
         return fn.apply(context, themArgs.concat(Array.prototype.slice.call(arguments)));
@@ -370,6 +424,7 @@
   return {
     wrap     : Wrap,
     predefine: Predefine,
-    delegate : Delegate
+    delegate : Delegate,
+    MAX_OPTIMIZED: 10
   };
 }));
