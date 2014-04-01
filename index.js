@@ -176,7 +176,7 @@
           );
         };
       case 9:
-        return function eightArgs(arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9){
+        return function nineArgs(arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9){
           return noContext ?
             fn(
               instead ? instead(arg1, 0) : arg1,
@@ -202,7 +202,7 @@
           );
         };
       case 10:
-        return function eightArgs(arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10){
+        return function tenArgs(arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10){
           return noContext ?
             fn(
               instead ? instead(arg1, 0) : arg1,
