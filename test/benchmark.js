@@ -88,7 +88,7 @@ suite
   .add('betterCurry predefine', {
     args: args,
     setup: setup,
-    fn   : "predefined();",
+    fn   : "predefined('YES');",
     onError: onError
   })
   .add('Function.call on wrapped', {

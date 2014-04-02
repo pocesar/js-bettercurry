@@ -74,16 +74,19 @@ describe('BetterCurry', function (){
     });
 
     it('should work with additional data', function(){
-      function base(a1, a2, a3){
-        return [a1, a2, a3, arguments.length.toString()];
+      var obj = {};
+
+      function base(a1, a2, a3, a4, a5){
+        /*jshint validthis:true*/
+        return [a1, a2, a3, a4, a5, arguments.length.toString(), this];
       }
-      var curried = BetterCurry.predefine(base, ['1']);
+      var curried = BetterCurry.predefine(base, ['1'], obj);
 
-      expect(curried(2,3)).to.eql(['1', 2, 3, '3']);
+      expect(curried(2, 3, 4, 5)).to.eql(['1', 2, 3, 4, 5, '5', obj]);
 
-      curried = BetterCurry.predefine(base, ['1'], null, 4);
+      curried = BetterCurry.predefine(base, ['1'], obj, 6);
 
-      expect(curried(2,3,'dummy','dummy','dummy')).to.eql(['1', 2, 3, '4']);
+      expect(curried(2,3,4,5,'dummy','dummy','dummy')).to.eql(['1', 2, 3, 4, 5,'6',obj]);
     });
 
     it('should execute the function without a context', function (){
