@@ -75,11 +75,15 @@ describe('BetterCurry', function (){
 
     it('should work with additional data', function(){
       function base(a1, a2, a3){
-        return [a1, a2, a3];
+        return [a1, a2, a3, arguments.length.toString()];
       }
       var curried = BetterCurry.predefine(base, ['1']);
 
-      expect(curried(2,3)).to.eql(['1',2,3]);
+      expect(curried(2,3)).to.eql(['1', 2, 3, '3']);
+
+      curried = BetterCurry.predefine(base, ['1'], null, 4);
+
+      expect(curried(2,3,'dummy','dummy','dummy')).to.eql(['1', 2, 3, '4']);
     });
 
     it('should execute the function without a context', function (){

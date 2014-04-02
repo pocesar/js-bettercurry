@@ -28,7 +28,7 @@
         remaining = rlen;
 
       instead = function (xarg, index){
-        var ret = remaining-- < 0 ? xarg : (themArgs[rlen + i++] = xarg, themArgs[index]);
+        var ret = remaining-- < -1 ? xarg : (themArgs[rlen + i++] = xarg, themArgs[index]);
         return ret;
       };
     }
