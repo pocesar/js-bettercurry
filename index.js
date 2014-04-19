@@ -6,7 +6,7 @@
     module.exports = factory();
   } else if (typeof define === 'function' && define.amd) {
     // AMD. Register as an anonymous module.
-    define([], factory);
+    define('better-curry', [], factory);
   } else {
     // Browser globals
     root.BetterCurry = factory();
