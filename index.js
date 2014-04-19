@@ -14,6 +14,18 @@
 }(this, function (){
   'use strict';
 
+  function slice() {
+    var out = [], args, x, i, l = arguments.length, m, t = 0;
+    for (x = 0; x < l; ++x) {
+      args = arguments[x];
+      m = args.length;
+      for (i = 0; i < m; ++i) {
+        out[t++] = args[i];
+      }
+    }
+    return out;
+  }
+
   function template(fn, len, context, args){
     var
       noContext = context === null,
@@ -21,7 +33,7 @@
       instead = false;
 
     if (typeof args !== 'undefined' && args.length && (len > 0 || len === -1)) {
-      themArgs = Array.prototype.slice.call(args);
+      themArgs = slice(args);
 
       var
         i = 0, rlen = themArgs.length;
@@ -239,11 +251,11 @@
     // really? 11 args?
     if (themArgs.length) {
       return function variadic(){
-        return fn.apply(context, themArgs.concat(Array.prototype.slice.call(arguments)));
+        return fn.apply(context, slice(themArgs, arguments));
       };
     } else {
       return function variadic(){
-        return fn.apply(context, arguments);
+        return fn.apply(context, slice(arguments));
       };
     }
   }
@@ -278,7 +290,7 @@
 
     context = context || null;
 
-    args = Array.prototype.concat(args);
+    args = slice(args);
 
     return template(fn, len, context, args);
   }
