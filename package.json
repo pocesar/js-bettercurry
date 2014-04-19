@@ -26,7 +26,7 @@
   ],
   "testling": {
     "harness": "mocha-bdd",
-    "files": "test/tests.js",
+    "files": ["test/globals.js", "test/tests.js"],
     "browsers": [
       "ie/8..latest",
       "chrome/latest",
