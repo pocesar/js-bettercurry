@@ -6,6 +6,11 @@
     "Paulo Cesar <email@pocesar.e4ward.com>"
   ],
   "description": "Forget Function.bind and func.apply(context, arguments), performance matters! For a better curry!",
+  "moduleType": [
+    "amd",
+    "globals",
+    "node"
+  ],
   "keywords": [
     "curry",
     "function",
