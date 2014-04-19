@@ -73,6 +73,16 @@ describe('BetterCurry', function (){
       expect(curried('gtct')).to.be('undefined1gtct');
     });
 
+    it('should work with less than the original argument list', function(){
+      function base(a1, a2, a3) {
+        return a1 + a2 + a3;
+      }
+
+      var curried = BetterCurry.predefine(base, ['1','2']);
+
+      expect(curried(undefined)).to.equal('12undefined');
+    });
+
     it('should work with additional data', function(){
       var obj = {};
 

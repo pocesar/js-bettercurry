@@ -39,10 +39,6 @@
         i = 0, rlen = themArgs.length;
 
       instead = function (xarg, index){
-        if (themArgs[index] === undefined) {
-          return xarg;
-        }
-
         themArgs[rlen + i++] = xarg;
 
         return themArgs[index];
