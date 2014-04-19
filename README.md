@@ -1,4 +1,5 @@
 [![Build Status](https://travis-ci.org/pocesar/js-bettercurry.png?branch=master)](https://travis-ci.org/pocesar/js-bettercurry?branch=master)
+
 [![browser support](https://ci.testling.com/pocesar/js-bettercurry.png)](https://ci.testling.com/pocesar/js-bettercurry)
 
 # Better Curry
