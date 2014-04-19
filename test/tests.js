@@ -401,4 +401,14 @@ describe('BetterCurry', function (){
       });
     });
   });
+
+  describe('flatten', function(){
+    it('should flatten a mix of arguments and arrays', function(){
+      function stuff(){
+          return BetterCurry.flatten([1,2,[3]], 'a', arguments);
+      }
+      expect(stuff(1,2,3, [1,2,3])).to.eql([1,2,[3],'a',1,2,3,[1,2,3]]);
+
+    });
+  });
 });

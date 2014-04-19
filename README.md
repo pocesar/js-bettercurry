@@ -125,6 +125,17 @@ obj = {
 };
 ```
 
+#### `BetterCurry.flatten(...args)`
+
+Flattens all array-like arguments passed (`Array` and `arguments`) and append them in order:
+
+```js
+function stuff(){
+    return BetterCurry.flatten([1,2,[3]], arguments);
+}
+stuff(1,2,3, [1,2,3]); // returns [1,2,[3],1,2,3,[1,2,3]]
+```
+
 # Test
 
 Just regular stuff (100% coverage by the way)

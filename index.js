@@ -438,6 +438,7 @@
     wrap     : Wrap,
     predefine: Predefine,
     delegate : Delegate,
+    flatten: slice,
     MAX_OPTIMIZED: 10
   };
 }));
