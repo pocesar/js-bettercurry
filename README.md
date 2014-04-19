@@ -1,7 +1,6 @@
 [![Build Status](https://travis-ci.org/pocesar/js-bettercurry.png?branch=master)](https://travis-ci.org/pocesar/js-bettercurry?branch=master)
 
 # Better Curry
-=================
 
 Because `return function(){ return fn.apply(context, Array.prototype.slice.call(arguments)); }` isn't good enough, that's why better curry.
 
