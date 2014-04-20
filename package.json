@@ -1,6 +1,6 @@
 {
   "name": "better-curry",
-  "version": "1.4.0",
+  "version": "1.5.0",
   "description": "Forget Function.bind and func.apply(context, arguments), performance matters! For a better curry!",
   "main": "index.js",
   "scripts": {
@@ -28,9 +28,10 @@
     "harness": "mocha-bdd",
     "files": ["test/globals.js", "test/tests.js"],
     "browsers": [
-      "ie/6..latest",
-      "chrome/22..latest",
-      "firefox/16..latest",
+      "ie/8..latest",
+      "chrome/latest",
+      "firefox/3.5",
+      "firefox/latest",
       "safari/latest",
       "opera/11.0..latest",
       "iphone/6",

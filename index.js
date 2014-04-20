@@ -345,6 +345,37 @@
   };
 
   /**
+   * Delegate all functions, setters, getters and methods, from the original proto
+   *
+   * @param {Array} skip
+   *
+   * @returns {Delegate}
+   */
+  Delegate.prototype.all = function(skip){
+    var base = this.proto[this.target], k;
+
+    if (skip && skip.length) {
+      for (k in base) {
+        if (skip.indexOf(k) === -1) {
+          if (typeof base[k] === 'function') {
+            this.method(k);
+          } else {
+            this.access(k);
+          }
+        }
+      }
+    } else {
+      for (k in base) {
+        if (typeof base[k] === 'function') {
+          this.method(k);
+        } else {
+          this.access(k);
+        }
+      }
+    }
+  };
+
+  /**
    * Setup a setter
    *
    * @param {String|Object} name Name of the function or configuration object

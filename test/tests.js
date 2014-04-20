@@ -399,6 +399,51 @@ describe('BetterCurry', function (){
         expect(obj.tremble).to.be.a('function');
         expect(obj.generate).to.be.ok();
       });
+
+      it('should delegate all setters, getters, methods automatically', function(){
+        function getObj(){
+          var obj = {};
+
+          obj.request = {
+            tumble: function(){
+              return 'tumble';
+            },
+            tremble: function(){
+              return this.generate;
+            },
+            set generate(val) {
+              var g = val;
+              return g;
+            },
+            get generate() {
+              return true;
+            },
+            value: 1,
+            ok: {
+              isTrue: true,
+              sub: function(){
+
+              }
+            }
+          };
+          return obj;
+        }
+
+        var obj = getObj();
+        var delegated = BetterCurry.delegate(obj, 'request');
+        delegated.all();
+        expect(obj.tumble()).to.be('tumble');
+        expect(obj.tremble()).to.be(true);
+        expect(obj.generate).to.be(true);
+        expect(obj.value).to.be(1);
+        expect(obj.ok).to.eql(obj.request.ok);
+
+        obj = getObj();
+        delegated = BetterCurry.delegate(obj, 'request');
+        delegated.all(['tumble']);
+        expect(obj.tumble).to.be.an('undefined');
+        expect(obj.tremble()).to.be(true);
+      });
     });
   });
 
@@ -407,8 +452,8 @@ describe('BetterCurry', function (){
       function stuff(){
           return BetterCurry.flatten([1,2,[3]], 'a', arguments);
       }
-      expect(stuff(1,2,3, [1,2,3])).to.eql([1,2,[3],'a',1,2,3,[1,2,3]]);
 
+      expect(stuff(1,2,3, [1,2,3])).to.eql([1,2,[3],'a',1,2,3,[1,2,3]]);
     });
   });
 });
