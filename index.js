@@ -256,16 +256,28 @@
     }
   }
 
+  var argumentsRegexp = /\barguments\b/;
+
   /**
    * Wrap a function keeping it's context or creating another
    *
    * @param {Function} fn Original function
    * @param {*} [context] The "this" context of the newly created function
    * @param {Number} [len] Number of arguments the function receives
-   * @returns {*}
+   * @param {Boolean} [checkArguments] Check if arguments is present, if so, use variadic automatically
+   *
+   * @returns {Function}
    */
-  function Wrap(fn, context, len){
+  function Wrap(fn, context, len, checkArguments){
     len = len || fn.length;
+
+    checkArguments = checkArguments || false;
+
+    if (checkArguments) {
+      if (len !== fn.length && argumentsRegexp.test(fn)) {
+        len = -1;
+      }
+    }
 
     context = context || null;
 
@@ -279,12 +291,20 @@
    * @param {Array} [args] Array of arguments to prepend to the function
    * @param {*} [context] The "this" context of the newly created function
    * @param {Number} [len] Number of arguments the function receives
-   * @returns {*}
+   * @param {Boolean} [checkArguments] Check if arguments is present, if so, use variadic automatically
+   *
+   * @returns {Function}
    */
-  function Predefine(fn, args, context, len){
+  function Predefine(fn, args, context, len, checkArguments){
     len = len || fn.length;
 
     context = context || null;
+
+    if (checkArguments) {
+      if (len !== fn.length && argumentsRegexp.test(fn)) {
+        len = -1;
+      }
+    }
 
     args = slice(args);
 

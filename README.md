@@ -26,7 +26,7 @@ Works on the browser or on node.js (super duper performance on the latter)
 
 ## API
 
-#### `BetterCurry.wrap(fn, [context], [len])`
+#### `BetterCurry.wrap(fn [, context[, len [, checkArguments]]])`
 
 When the function have all arguments defined.
 You can bind the new resulting function to a new context (change the `this` inside the function).
@@ -53,6 +53,9 @@ based('one', 'two', 'three', 'will be ignored'); // 'one + two + three'
 
 Passing a `len` of `-1` will make sure it behaves like variadic (that is, uses `fn.apply(context, Array.prototype.slice.call(arguments));`
 
+When passing `true` to `checkArguments`, it will check if the body of the function has the `arguments` keyword.
+If so, it will use a variadic function instead of a defined length.
+
 ```js
 function base(){
     return Array.prototype.slice.call(arguments).join(' + ');
@@ -61,7 +64,7 @@ var based = BetterCurry.wrap(base, null, -1);
 based('one', 'two', 'three', 'wont be ignored','its','free for all'); // 'one + two + three + wont be ignored + its + free for all'
 ```
 
-#### `BetterCurry.predefine(fn, args, [context], [len])`
+#### `BetterCurry.predefine(fn, args [, context[, len [, checkArguments]]])`
 
 Predefine creates a function that, when executed, will have the
 predefined arguments plus any arguments that you pass:
@@ -87,7 +90,10 @@ curried = BetterCurry.predefine(base, ['1','2','3','4'], null, 5);
 curried('5','6'); // '1 + 2 + 3 + 4 + 5'
 ```
 
-All `-1` len are slower since it uses `Function.apply` (many times slower than `Function.call` and `Array.prototype.slice` + `concat`)
+All `-1` len are slower since it uses `Function.apply` (many times slower than `Function.call`)
+
+When passing `true` to `checkArguments`, it will check if the body of the function has the `arguments` keyword.
+If so, it will use a variadic function instead of a defined length.
 
 #### `BetterCurry.delegate(proto, target)`
 
@@ -150,10 +156,10 @@ npm run coverage
 
 ```
 =============================== Coverage summary ===============================
-Statements   : 100% ( 103/103 ), 3 ignored
-Branches     : 100% ( 303/303 ), 5 ignored
-Functions    : 100% ( 29/29 )
-Lines        : 100% ( 103/103 )
+Statements   : 100% ( 123/123 ), 3 ignored
+Branches     : 100% ( 327/327 ), 5 ignored
+Functions    : 100% ( 30/30 )
+Lines        : 100% ( 123/123 )
 ================================================================================
 ```
 

@@ -127,6 +127,28 @@ describe('BetterCurry', function (){
       }
     });
 
+    it('should detect if arguments is in the body and mismatches the length', function(){
+      var base = function(a1, a2){
+        return arguments.join(' + ');
+      };
+
+      var curried = BetterCurry.predefine(base, [], null, 2, true);
+
+      expect(curried.toString()).to.match(/twoArgs/);
+
+      curried = BetterCurry.predefine(base, [], null, 1, true);
+
+      expect(curried.toString()).to.match(/variadic/);
+
+      base = function(a1, a2) {
+        return a1 + a2;
+      };
+
+      curried = BetterCurry.predefine(base, [], null, 1, true);
+
+      expect(curried.toString()).to.match(/oneArg/);
+    });
+
     describe('should pass the examples given on readme', function (){
       it('1', function (){
         function base(argument){
@@ -183,6 +205,28 @@ describe('BetterCurry', function (){
           return current + next;
         }));
       }
+    });
+
+    it('should detect if arguments is in the body and mismatches the length', function(){
+      var base = function(a1, a2){
+        return arguments.join(' + ');
+      };
+
+      var curried = BetterCurry.wrap(base, null, 2, true);
+
+      expect(curried.toString()).to.match(/twoArgs/);
+
+      curried = BetterCurry.wrap(base, null, 1, true);
+
+      expect(curried.toString()).to.match(/variadic/);
+
+      base = function(a1, a2) {
+        return a1 + a2;
+      };
+
+      curried = BetterCurry.wrap(base, null, 1, true);
+
+      expect(curried.toString()).to.match(/oneArg/);
     });
 
     describe('should pass the examples given on readme', function (){
