@@ -21,7 +21,7 @@ describe('BetterCurry', function (){
   function craft(i){
     var out = [];
     for (var x = 0; x <= i; x++) {
-      out.push(Math.round((Math.random() * 20) + 1));
+      out.push(x);
     }
     return out;
   }
@@ -54,6 +54,14 @@ describe('BetterCurry', function (){
         curried = BetterCurry.predefine(fn, args, context);
 
       expect(curried('ok')).to.equal(context.data + ':' + args.concat(['ok']).join(','));
+    });
+
+    it('should contain the original lenght of the base function on the wrapped function', function(){
+      for (var i = 1; i < fs.length; i++) {
+        var args = craft(i - 1), func = BetterCurry.predefine(fs[i - 1], args);
+
+        expect(func.__length).to.be(i);
+      }
     });
 
     it('should work on zero length functions', function (){
@@ -140,6 +148,7 @@ describe('BetterCurry', function (){
 
       expect(curried.toString()).to.match(/variadic/);
 
+
       base = function(a1, a2) {
         return a1 + a2;
       };
@@ -147,6 +156,12 @@ describe('BetterCurry', function (){
       curried = BetterCurry.predefine(base, [], null, 1, true);
 
       expect(curried.toString()).to.match(/oneArg/);
+      expect(curried.__length).to.be(2);
+
+      curried = BetterCurry.predefine(curried, [], null, 1, true);
+
+      expect(curried.toString()).to.match(/twoArgs/);
+      expect(curried.__length).to.be(1);
     });
 
     describe('should pass the examples given on readme', function (){
@@ -227,6 +242,12 @@ describe('BetterCurry', function (){
       curried = BetterCurry.wrap(base, null, 1, true);
 
       expect(curried.toString()).to.match(/oneArg/);
+      expect(curried.__length).to.be(2);
+
+      curried = BetterCurry.wrap(curried, null, 1, true);
+
+      expect(curried.toString()).to.match(/twoArgs/);
+      expect(curried.__length).to.be(1);
     });
 
     describe('should pass the examples given on readme', function (){

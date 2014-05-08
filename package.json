@@ -1,6 +1,6 @@
 {
   "name": "better-curry",
-  "version": "1.5.1",
+  "version": "1.6.0",
   "description": "Forget Function.bind and func.apply(context, arguments), performance matters! For a better curry!",
   "main": "index.js",
   "scripts": {
@@ -9,7 +9,7 @@
     "benchmark": "node test/benchmark.js"
   },
   "engines": {
-    "node": ">=0.10"
+    "node": ">=0.8"
   },
   "repository": {
     "type": "git",
@@ -42,7 +42,7 @@
   "devDependencies": {
     "mocha": "*",
     "expect.js": "*",
-    "benchmark": "^1.0.0",
+    "benchmark": "1.x.x",
     "delegates": "*"
   },
   "author": "",

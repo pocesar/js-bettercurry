@@ -29,7 +29,7 @@
   function template(fn, len, context, args){
     var
       noContext = context === null,
-      themArgs = [],
+      themArgs = [], outFn,
       instead = false;
 
     if (typeof args !== 'undefined' && args.length && (len > 0 || len === -1)) {
@@ -47,13 +47,14 @@
 
     switch (len) {
       case 0:
-        return function zeroArgs(){
+        outFn = function zeroArgs(){
           return noContext ?
             fn()
             : fn.call(context);
         };
+        break;
       case 1:
-        return function oneArg(arg1){
+        outFn = function oneArg(arg1){
           return noContext ?
             fn(
               instead === false ? arg1 : instead(arg1, 0)
@@ -62,8 +63,9 @@
             instead === false ? arg1 : instead(arg1, 0)
           );
         };
+        break;
       case 2:
-        return function twoArgs(arg1, arg2){
+        outFn = function twoArgs(arg1, arg2){
           return noContext ?
             fn(
               instead === false ? arg1 : instead(arg1, 0) ,
@@ -74,8 +76,9 @@
             instead === false ? arg2 : instead(arg2, 1)
           );
         };
+        break;
       case 3:
-        return function threeArgs(arg1, arg2, arg3){
+        outFn = function threeArgs(arg1, arg2, arg3){
           return noContext ?
             fn(
               instead === false ? arg1 : instead(arg1, 0),
@@ -88,8 +91,9 @@
             instead === false ? arg3 : instead(arg3, 2)
           );
         };
+        break;
       case 4:
-        return function fourArgs(arg1, arg2, arg3, arg4){
+        outFn = function fourArgs(arg1, arg2, arg3, arg4){
           return noContext ?
             fn(
               instead === false ? arg1 : instead(arg1, 0),
@@ -104,8 +108,9 @@
             instead === false ? arg4 : instead(arg4, 3)
           );
         };
+        break;
       case 5:
-        return function fiveArgs(arg1, arg2, arg3, arg4, arg5){
+        outFn = function fiveArgs(arg1, arg2, arg3, arg4, arg5){
           return noContext ?
             fn(
               instead === false ? arg1 : instead(arg1, 0),
@@ -122,8 +127,9 @@
             instead === false ? arg5 : instead(arg5, 4)
           );
         };
+        break;
       case 6:
-        return function sixArgs(arg1, arg2, arg3, arg4, arg5, arg6){
+        outFn = function sixArgs(arg1, arg2, arg3, arg4, arg5, arg6){
           return noContext ?
             fn(
               instead === false ? arg1 : instead(arg1, 0),
@@ -142,8 +148,9 @@
             instead === false ? arg6 : instead(arg6, 5)
           );
         };
+        break;
       case 7:
-        return function sevenArgs(arg1, arg2, arg3, arg4, arg5, arg6, arg7){
+        outFn = function sevenArgs(arg1, arg2, arg3, arg4, arg5, arg6, arg7){
           return noContext ?
             fn(
               instead === false ? arg1 : instead(arg1, 0),
@@ -164,8 +171,9 @@
             instead === false ? arg7 : instead(arg7, 6)
           );
         };
+        break;
       case 8:
-        return function eightArgs(arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8){
+        outFn = function eightArgs(arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8){
           return noContext ?
             fn(
               instead === false ? arg1 : instead(arg1, 0),
@@ -188,8 +196,9 @@
             instead === false ? arg8 : instead(arg8, 7)
           );
         };
+        break;
       case 9:
-        return function nineArgs(arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9){
+        outFn = function nineArgs(arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9){
           return noContext ?
             fn(
               instead === false ? arg1 : instead(arg1, 0),
@@ -214,8 +223,9 @@
             instead === false ? arg9 : instead(arg9, 8)
           );
         };
+        break;
       case 10:
-        return function tenArgs(arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10){
+        outFn = function tenArgs(arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10){
           return noContext ?
             fn(
               instead === false ? arg1 : instead(arg1, 0),
@@ -242,18 +252,23 @@
             instead === false ? arg10 : instead(arg10, 9)
           );
         };
+        break;
+      default:
+        // really? 11 args?
+        if (themArgs.length) {
+          outFn = function variadic(){
+            return fn.apply(context, slice(themArgs, arguments));
+          };
+        } else {
+          outFn = function variadic(){
+            return fn.apply(context, slice(arguments));
+          };
+        }
     }
 
-    // really? 11 args?
-    if (themArgs.length) {
-      return function variadic(){
-        return fn.apply(context, slice(themArgs, arguments));
-      };
-    } else {
-      return function variadic(){
-        return fn.apply(context, slice(arguments));
-      };
-    }
+    outFn.__length = fn.length;
+
+    return outFn;
   }
 
   var argumentsRegexp = /\barguments\b/;
@@ -269,19 +284,21 @@
    * @returns {Function}
    */
   function Wrap(fn, context, len, checkArguments){
-    len = len || fn.length;
+    var _len = len || fn.length;
 
     checkArguments = checkArguments || false;
 
     if (checkArguments) {
       if (len !== fn.length && argumentsRegexp.test(fn)) {
-        len = -1;
+        _len = -1;
+      } else if (fn.__length) {
+        _len = fn.__length;
       }
     }
 
     context = context || null;
 
-    return template(fn, len, context);
+    return template(fn, _len, context);
   }
 
   /**
@@ -296,19 +313,25 @@
    * @returns {Function}
    */
   function Predefine(fn, args, context, len, checkArguments){
-    len = len || fn.length;
+    var _len = len || fn.length;
 
     context = context || null;
 
     if (checkArguments) {
       if (len !== fn.length && argumentsRegexp.test(fn)) {
-        len = -1;
+        _len = -1;
+      } else if (fn.__length) {
+        _len = fn.__length;
       }
     }
 
     args = slice(args);
 
-    return template(fn, len, context, args);
+    if (args.length === 0) {
+      return Wrap(fn, context, len, checkArguments);
+    }
+
+    return template(fn, _len, context, args);
   }
 
   /**

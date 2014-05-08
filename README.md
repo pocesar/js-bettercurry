@@ -64,6 +64,19 @@ var based = BetterCurry.wrap(base, null, -1);
 based('one', 'two', 'three', 'wont be ignored','its','free for all'); // 'one + two + three + wont be ignored + its + free for all'
 ```
 
+Generated function will have a `__length` property, that equals to the original fn length.
+
+You may hint the function by appending the expected length to your function (or if it's already wrapped):
+
+```js
+var myfunc = function(arg1, arg2, arg3, arg4){
+
+};
+myfunc.__length = 3;
+
+BetterCurry.wrap(myfunc, null, true); // creates a threeArgs wrapped function
+```
+
 #### `BetterCurry.predefine(fn, args [, context[, len [, checkArguments]]])`
 
 Predefine creates a function that, when executed, will have the
@@ -94,6 +107,8 @@ All `-1` len are slower since it uses `Function.apply` (many times slower than `
 
 When passing `true` to `checkArguments`, it will check if the body of the function has the `arguments` keyword.
 If so, it will use a variadic function instead of a defined length.
+
+Generated function will have a `__length` property, that equals to the original fn length
 
 #### `BetterCurry.delegate(proto, target)`
 
@@ -156,10 +171,10 @@ npm run coverage
 
 ```
 =============================== Coverage summary ===============================
-Statements   : 100% ( 123/123 ), 3 ignored
-Branches     : 100% ( 327/327 ), 5 ignored
+Statements   : 100% ( 138/138 ), 3 ignored
+Branches     : 100% ( 330/330 ), 5 ignored
 Functions    : 100% ( 30/30 )
-Lines        : 100% ( 123/123 )
+Lines        : 100% ( 138/138 )
 ================================================================================
 ```
 
